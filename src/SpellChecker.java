@@ -16,15 +16,15 @@ public class SpellChecker{
 
     private String formatString(String s){
         String s_f = s;
-        s_f = s_f.replaceAll("\\p{Punct}"," ");
+        s_f = s_f.replaceAll("\\p{Punct}","");
         return s_f;
     }
 
     private StringArray ParseText(String s){
         StringArray sArr = new StringArray();
-        String[] parsed = s.split(" ");
+        String[] parsed = s.split("\\s");
         for(String str:parsed){
-            sArr.add(str);
+            sArr.add(formatString(str));
         }
         return sArr;
     }
@@ -57,12 +57,10 @@ public class SpellChecker{
         StringArray dict = loadDictionary();
         match_words(input,dict);
 
+        System.out.print("These words were not matched in the dictionary:");
         for(int i = 0;i < unmatched.size();i ++){
-            System.out.println(unmatched.get(i));
+            System.out.print(" "+unmatched.get(i)+" ");
         }
-    }
-
-    public static void main(String[] args){
-        new SpellChecker().run();
+        //System.out.println("\n" + unmatched.size());
     }
 }
