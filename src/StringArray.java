@@ -30,10 +30,7 @@ public class StringArray {
     }
 
     private boolean indexValid(int index){
-        if((index > (this.size() - 1)) || (index < 0)){
-            return false;
-        }
-        return true;
+        return (index <= (this.size() - 1)) && (index >= 0);
     }
 
     public int size(){
@@ -41,12 +38,7 @@ public class StringArray {
     }
 
     public boolean isEmpty(){
-        if (this.size() == 0) {
-            return true;
-        }
-        else{
-            return false;
-        }
+        return this.size() == 0;
     }
 
     public String get(int index){
@@ -76,10 +68,7 @@ public class StringArray {
         increase_size();
 
         if (this.isEmpty()){
-            if (index == 0){
-                arr[0] = s;
-                size++;
-            }
+            if (index == 0){ arr[0] = s; size++; }
         }
         else if (indexValid(index)){
             String prev = this.get(index);
@@ -112,11 +101,10 @@ public class StringArray {
                     return true;
                 }
             }
-            else if(arr[i] == null){
-                continue;
-            }
-            else if((arr[i].toLowerCase()).equals(s.toLowerCase())){
-                return true;
+            else if(arr[i] != null) {
+                if ((arr[i]).equalsIgnoreCase(s)) {
+                    return true;
+                }
             }
         }
         return false;
@@ -129,11 +117,10 @@ public class StringArray {
                     return true;
                 }
             }
-            else if(arr[i] == null){
-                continue;
-            }
-            else if((arr[i].equals(s))){
-                return true;
+            else if(arr[i] != null) {
+                if ((arr[i].equals(s))) {
+                    return true;
+                }
             }
         }
         return false;
@@ -146,22 +133,12 @@ public class StringArray {
                     return i;
                 }
             }
-            else if(arr[i] == null){
-                continue;
-            }
-            if(arr[i] == null){
-                if (s == null){
+            else if(arr[i] != null) {
+                if ((arr[i]).equalsIgnoreCase(s)) {
                     return i;
                 }
-                else{
-                    continue;
-                }
-            }
-            else if((arr[i].toLowerCase()).equals(s.toLowerCase())){
-                return i;
             }
         }
-
         return -1;
     }
 
@@ -172,11 +149,10 @@ public class StringArray {
                     return i;
                 }
             }
-            else if(arr[i] == null){
-                continue;
-            }
-            else if(arr[i].equals(s)){
-                return i;
+            else if(arr[i] != null) {
+                if (arr[i].equals(s)) {
+                    return i;
+                }
             }
         }
         return -1;
