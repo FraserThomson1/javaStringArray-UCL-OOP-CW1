@@ -1,36 +1,36 @@
 public class StringArray {
-
-    private String arr[];
-    private int size;
+    private String arr[]; //stores strings
+    private int size; //stores num of items of the string array
 
     public StringArray(){
-        arr = new String[100];
-        size = 0;
+        arr = new String[100]; //initialise the string array to size  100
+        size = 0; //initialise size of array to 0
     }
 
     public StringArray(StringArray a){
-        size = a.size() + (100 - a.size() % 100);
-        arr = new String[size];
+        int len = a.size() + (100 - a.size() % 100); //calculate correct size
+        arr = new String[len]; //initialise string array to correct size
 
+        //copy the parameter array into the string array
         for(int i = 0;i < a.size();i ++){
             arr[i] = a.get(i);
         }
 
-        size = a.size();
+        size = a.size(); //update the size
     }
 
     private void increase_size(){
-        if(arr.length == this.size()){
+        if(arr.length == this.size()){ //check if array is full
             String[] tmp = arr;
-            arr = new String[tmp.length+100];
+            arr = new String[tmp.length+100]; //extends length of string array by 100 elements
             for(int i = 0;i < tmp.length;i ++){
-                arr[i] = tmp[i];
+                arr[i] = tmp[i]; //copy original strings to new string array
             }
         }
     }
 
     private boolean indexValid(int index){
-        return (index <= (this.size() - 1)) && (index >= 0);
+        return (index <= (this.size() - 1)) && (index >= 0); //checks if an index if valid for the current string array
     }
 
     public int size(){
@@ -43,32 +43,32 @@ public class StringArray {
 
     public String get(int index){
         if(!indexValid(index)){
-            return null;
+            return null; //if index not valid then return null
         }
         else {
-            return arr[index];
+            return arr[index]; //return item in the string array at that index
         }
     }
 
     public void set(int index, String s){
         if (indexValid(index)){
-            arr[index] = s;
+            arr[index] = s; //if index valid overwrite item at index
         }
     }
 
     public void add(String s){
-        increase_size();
-        int index = this.size();
+        increase_size(); //increase the size of the string array if it is full
+        int index = this.size(); //index set to next index of current last item
         arr[index] = s;
 
-        size ++;
+        size ++; //increment size
     }
 
     public void insert(int index, String s){
-        increase_size();
+        increase_size(); //increase the size of the string array if it is full
 
         if (this.isEmpty()){
-            if (index == 0){ arr[0] = s; size++; }
+            if (index == 0){ arr[0] = s; size++; } //add item if array is empty
         }
         else if (indexValid(index)){
             String prev = this.get(index);
@@ -86,11 +86,11 @@ public class StringArray {
 
     public void remove(int index){
         if(indexValid(index)){
-            this.set(index,null);
+            this.set(index,null); //set removed item's index to null
             for(int i = index+1;i < this.size(); i ++){
-                arr[i-1] = arr[i];
+                arr[i-1] = arr[i]; //move items behind the removed item 1 index to the front
             }
-            size--;
+            size--; //decrement size
         }
     }
 
@@ -98,11 +98,11 @@ public class StringArray {
         for (int i = 0;i < this.size();i ++){
             if(s == null){
                 if (arr[i] == null){
-                    return true;
+                    return true; //if search item is null and item at index is null return true
                 }
             }
             else if(arr[i] != null) {
-                if ((arr[i]).equalsIgnoreCase(s)) {
+                if ((arr[i]).equalsIgnoreCase(s)) { //compares the strings ignoring the case.
                     return true;
                 }
             }
@@ -114,11 +114,11 @@ public class StringArray {
         for (int i = 0;i < this.size();i ++){
             if(s == null){
                 if (arr[i] == null){
-                    return true;
+                    return true; //if search item is null and item at index is null return true
                 }
             }
             else if(arr[i] != null) {
-                if ((arr[i].equals(s))) {
+                if ((arr[i].equals(s))) { //compares the strings considering their case
                     return true;
                 }
             }
@@ -130,7 +130,7 @@ public class StringArray {
         for (int i = 0;i < this.size();i ++){
             if(s == null){
                 if (arr[i] == null){
-                    return i;
+                    return i; //if search item is null and item at index i is null return i
                 }
             }
             else if(arr[i] != null) {
@@ -146,7 +146,7 @@ public class StringArray {
         for (int i = 0;i < this.size();i ++){
             if(s == null){
                 if (arr[i] == null){
-                    return i;
+                    return i; //if search item is null and item at index i is null return i
                 }
             }
             else if(arr[i] != null) {
