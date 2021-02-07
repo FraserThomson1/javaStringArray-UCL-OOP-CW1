@@ -61,9 +61,14 @@ public class SpellChecker{
         StringArray dict = loadDictionary();
         match_words(input,dict);
 
+        WordSuggest WS = new WordSuggest();
+
         System.out.println(unmatched.size() + " words were not matched in the dictionary");
         for(int i = 0;i < unmatched.size();i ++) {
-            System.out.println(" " + unmatched.get(i) + " ");
+            System.out.print((i+1) + ": " + unmatched.get(i) + " --- ");
+            System.out.print("Suggestions: ");
+            WordSuggest.FindSuggestion(unmatched.get(i),dict);
+            System.out.println();
         }
     }
 }
