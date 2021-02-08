@@ -1,18 +1,27 @@
 public class SpellChecker{
 
-    private StringArray unmatched; //array storing words that didnt match
+    private StringArray unmatched; //array storing words that didn't match
+    private int[] indices; //index of unmatched words
+    private Input in = new Input();
 
     public SpellChecker(){
         unmatched = new StringArray(); //initialise it as an empty string array
     }
 
-    private String InputText(){
+    private String InputText(String prompt){
         //takes input and returns it
-        Input in = new Input();
-        String input;
-        System.out.println("Input your text: ");
-        input = in.nextLine();
+        System.out.print(prompt);
+        String input = in.nextLine();
+        System.out.println();
         return input;
+    }
+
+    private void outputToFile(String text){
+        //takes string and writes it to output.txt
+        FileOutput out = new FileOutput("output.txt");
+        out.writeString(text);
+        out.writeEndOfLine();
+        out.close();
     }
 
     private String formatString(String s){
@@ -43,32 +52,49 @@ public class SpellChecker{
         return words;
     }
 
-    private void match_words(StringArray text,StringArray dict){
+    private void match_words(StringArray text,StringArray dict,WordSuggest W){
+        StringArray subs = new StringArray();
+        String choice;
         for(int i = 0;i < text.size();i ++){ //iterate over the words in the input
             if(dict.contains(text.get(i))){
                 continue; //continue to next word if the current word is contained in the dictionary
             }
-            else{
+            else {
                 unmatched.add(text.get(i)); //if not found in the dictionary then store in the unmatched StringArray
+                System.out.print(text.get(i) + " was not matched --- Suggestions: "); //output word not matched
+                subs = W.FindSuggestion(text.get(i), dict); //outputs substitutes and store it in subs
+                System.out.println();
+                if(subs.size()>0) { //if substitutes available
+                    choice = InputText("Choose a substitute for your word(enter index): ");
+                    //wait until a valid index entered
+                    while (!((Integer.valueOf(choice) <= subs.size()) && (Integer.valueOf(choice) >= 1))) {
+                        System.out.println("Invalid choice, please enter again.");
+                        choice = InputText("Choose a substitute for your word(enter index): ");
+                    }
+                    text.set(i, subs.get(Integer.valueOf(choice) - 1)); //swap in the chosen substitution
+                }
             }
         }
     }
 
     public void run(){
-        String text = InputText();
-        String formatted_txt = formatString(text);
-        StringArray input = ParseText(formatted_txt);
-        StringArray dict = loadDictionary();
-        match_words(input,dict);
-
+        String text = InputText("Input your text: "); //receive input
+        String formatted_txt = formatString(text); //formats string
+        StringArray input = ParseText(formatted_txt); //parses string and stores words in a stringArray instance
+        StringArray dict = loadDictionary(); //load word.txt into a StringArray instance
+        StringArray substitutes = new StringArray();
         WordSuggest WS = new WordSuggest();
+        String finalString = "";
 
-        System.out.println(unmatched.size() + " words were not matched in the dictionary");
-        for(int i = 0;i < unmatched.size();i ++) {
-            System.out.print((i+1) + ": " + unmatched.get(i) + " --- ");
-            System.out.print("Suggestions: ");
-            WordSuggest.FindSuggestion(unmatched.get(i),dict);
-            System.out.println();
+        match_words(input,dict,WS); //finds words unmatched and swap valid words in
+
+        System.out.print("Stored Text: ");
+        //output the modified string to user
+        for(int i = 0; i < input.size();i ++){
+           System.out.print(input.get(i)+" ");
+           finalString = finalString + input.get(i) + " "; //concatenate the words together
         }
+
+        outputToFile(finalString); //write the final String the output file
     }
 }
