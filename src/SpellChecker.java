@@ -94,7 +94,7 @@ public class SpellChecker{
            System.out.print(input.get(i)+" ");
            finalString = finalString + input.get(i) + " "; //concatenate the words together
         }
-
+        System.out.println("\nCan be found at output.txt");
         outputToFile(finalString); //write the final String the output file
     }
 }
